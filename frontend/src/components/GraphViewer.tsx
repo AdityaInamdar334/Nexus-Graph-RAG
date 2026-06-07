@@ -11,6 +11,25 @@ interface GraphViewerProps {
 
 export default function GraphViewer({ graphData, onNodeClick }: GraphViewerProps) {
   const fgRef = useRef<any>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const [dimensions, setDimensions] = useState({ width: 0, height: 0 });
+
+  // Use ResizeObserver to reliably measure container even when unhidden
+  useEffect(() => {
+    if (!containerRef.current) return;
+    const observer = new ResizeObserver((entries) => {
+      for (let entry of entries) {
+        if (entry.contentRect.width > 0) {
+          setDimensions({
+            width: entry.contentRect.width,
+            height: entry.contentRect.height,
+          });
+        }
+      }
+    });
+    observer.observe(containerRef.current);
+    return () => observer.disconnect();
+  }, []);
 
   // Apply custom D3 forces once the graph is mounted
   useEffect(() => {
@@ -25,7 +44,7 @@ export default function GraphViewer({ graphData, onNodeClick }: GraphViewerProps
     } catch (e) {
       console.warn("Failed to apply custom D3 forces:", e);
     }
-  }, []);
+  }, [dimensions.width]);
 
   const gData = useMemo(() => {
     if (!graphData?.nodes || !graphData?.links) return { nodes: [], links: [] };
@@ -74,10 +93,13 @@ export default function GraphViewer({ graphData, onNodeClick }: GraphViewerProps
   }, [onNodeClick]);
 
   return (
-    <div style={{ height: '100%', width: '100%', backgroundColor: '#050505', display: 'flex' }}>
-      <ForceGraph2D
-        ref={fgRef}
-        graphData={gData}
+    <div ref={containerRef} style={{ height: '100%', width: '100%', backgroundColor: '#050505', display: 'flex' }}>
+      {dimensions.width > 0 && (
+        <ForceGraph2D
+          ref={fgRef}
+          width={dimensions.width}
+          height={dimensions.height}
+          graphData={gData}
           nodeLabel="name"
           nodeColor="color"
           linkColor={() => 'rgba(255,255,255,0.15)'}
