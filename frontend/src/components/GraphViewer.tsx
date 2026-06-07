@@ -14,6 +14,14 @@ export default function GraphViewer({ graphData, onNodeClick }: GraphViewerProps
   const containerRef = useRef<HTMLDivElement>(null);
   const [dimensions, setDimensions] = useState({ width: 0, height: 0 });
 
+  // Apply custom D3 forces once the graph is mounted
+  useEffect(() => {
+    if (fgRef.current) {
+      fgRef.current.d3Force('charge').strength(-400);
+      fgRef.current.d3Force('link').distance(80);
+    }
+  }, [dimensions.width, dimensions.height]);
+
   useEffect(() => {
     if (containerRef.current) {
       setDimensions({
@@ -131,11 +139,8 @@ export default function GraphViewer({ graphData, onNodeClick }: GraphViewerProps
             ctx.fillText(label, node.x, textY);
             ctx.shadowBlur = 0;
           }}
-          // Increase repulsion so things spread out nicely like an organic web
-          d3Force={(d3: any, d3Force: any) => {
-            d3.force('charge').strength(-400);
-            d3.force('link').distance(80);
           }}
+
         />
       )}
     </div>
