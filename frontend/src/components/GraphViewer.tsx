@@ -10,7 +10,7 @@ interface GraphViewerProps {
 }
 
 export default function GraphViewer({ graphData, onNodeClick }: GraphViewerProps) {
-  const fgRef = useRef<any>();
+  const fgRef = useRef<any>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const [dimensions, setDimensions] = useState({ width: 0, height: 0 });
 
