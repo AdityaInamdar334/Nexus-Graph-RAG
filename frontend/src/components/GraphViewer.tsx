@@ -16,9 +16,16 @@ export default function GraphViewer({ graphData, onNodeClick }: GraphViewerProps
 
   // Apply custom D3 forces once the graph is mounted
   useEffect(() => {
-    if (fgRef.current) {
-      fgRef.current.d3Force('charge').strength(-400);
-      fgRef.current.d3Force('link').distance(80);
+    try {
+      if (fgRef.current && typeof fgRef.current.d3Force === 'function') {
+        const charge = fgRef.current.d3Force('charge');
+        if (charge) charge.strength(-400);
+        
+        const link = fgRef.current.d3Force('link');
+        if (link) link.distance(80);
+      }
+    } catch (e) {
+      console.warn("Failed to apply custom D3 forces:", e);
     }
   }, [dimensions.width, dimensions.height]);
 
