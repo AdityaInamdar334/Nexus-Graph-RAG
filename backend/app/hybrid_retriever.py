@@ -10,12 +10,16 @@ def extract_keywords(question: str) -> List[str]:
     keywords = [w for w in words if w not in stop_words and len(w) > 2]
     return keywords
 
-def hybrid_retrieve(question: str, vector_store, graph_store, k: int = 4):
+def hybrid_retrieve(question: str, vector_store, graph_store, filename: str = None, k: int = 4):
     """
     Combines vector retrieval with graph neighbor traversal.
     """
     # 1. Vector Search
-    retriever = vector_store.as_retriever(search_kwargs={"k": k})
+    search_kwargs = {"k": k}
+    if filename:
+        search_kwargs["filter"] = {"source": f"uploads/{filename}"}
+        
+    retriever = vector_store.as_retriever(search_kwargs=search_kwargs)
     docs = retriever.invoke(question) # get_relevant_documents is deprecated
     vector_context = "\n".join([doc.page_content for doc in docs])
     

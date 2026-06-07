@@ -93,7 +93,7 @@ async def ask_question(request: QuestionRequest):
     try:
         graph_store = graphs_db.get(request.filename) if request.filename else None
         
-        result = ask_question_hybrid(request.question, graph_store)
+        result = ask_question_hybrid(request.question, filename=request.filename, graph_store=graph_store)
         
         # Extract the answer and source documents
         answer = result.get("result")

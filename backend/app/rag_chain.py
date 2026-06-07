@@ -3,14 +3,14 @@ from langchain_core.prompts import PromptTemplate
 from .hybrid_retriever import hybrid_retrieve
 from .vector_store import get_vector_store
 
-def ask_question_hybrid(question: str, graph_store=None):
+def ask_question_hybrid(question: str, filename: str = None, graph_store=None):
     """
     Answers a question using hybrid context (vector + graph) instead of simple RetrievalQA.
     """
     vector_store = get_vector_store()
     
     # Get combined hybrid context
-    combined_context, source_docs = hybrid_retrieve(question, vector_store, graph_store, k=4)
+    combined_context, source_docs = hybrid_retrieve(question, vector_store, graph_store, filename=filename, k=4)
     
     llm = ChatNVIDIA(model="meta/llama-3.1-8b-instruct", temperature=0.2, top_p=0.7, max_tokens=1024)
     
