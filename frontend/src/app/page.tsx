@@ -27,8 +27,10 @@ export default function Home() {
     const formData = new FormData();
     formData.append("file", file);
 
+    const API_URL = process.env.NEXT_PUBLIC_API_URL || "https://nexus-rag-backend-poa5.onrender.com";
+
     try {
-      const res = await fetch("http://localhost:8000/upload", {
+      const res = await fetch(`${API_URL}/upload`, {
         method: "POST",
         body: formData,
       });
@@ -36,7 +38,7 @@ export default function Home() {
       setUploadResult(data);
       
       // Fetch Graph Data
-      const graphRes = await fetch(`http://localhost:8000/graph/${file.name}`);
+      const graphRes = await fetch(`${API_URL}/graph/${file.name}`);
       if (graphRes.ok) {
          const gData = await graphRes.json();
          setGraphData(gData);
@@ -56,8 +58,10 @@ export default function Home() {
     setQuestion("");
     setAsking(true);
 
+    const API_URL = process.env.NEXT_PUBLIC_API_URL || "https://nexus-rag-backend-poa5.onrender.com";
+
     try {
-      const res = await fetch("http://localhost:8000/ask", {
+      const res = await fetch(`${API_URL}/ask`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ question: currentQ, filename: file ? file.name : null }),
