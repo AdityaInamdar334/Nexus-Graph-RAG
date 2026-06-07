@@ -16,6 +16,7 @@ The system is split into a highly-performant Python backend and a sleek, dynamic
 
 ### 1. The Backend (FastAPI + Langchain)
 - **Framework**: `FastAPI` handles the REST API routes (`/upload`, `/ask`, `/graph`) asynchronously.
+- **Hosting**: Deployed on **Render** using a persistent web service blueprint.
 - **Document Processing**: `PyPDFLoader` and `RecursiveCharacterTextSplitter` chunk PDFs into overlapping semantic blocks.
 - **Vector Storage**: `ChromaDB` stores document embeddings locally.
 - **AI Models (Powered by NVIDIA NIM API)**:
@@ -25,6 +26,7 @@ The system is split into a highly-performant Python backend and a sleek, dynamic
 
 ### 2. The Frontend (Next.js + TailwindCSS)
 - **Framework**: `Next.js 15` (App Router) built with `React`.
+- **Hosting**: Deployed globally on **Vercel** for optimal edge performance.
 - **Styling**: `Tailwind CSS` is used for modern, glass-morphism aesthetics and responsive layouts.
 - **Graph UI**: `react-force-graph-2d` powers the Obsidian-style physics engine. Nodes repel each other, glow dynamically based on entity types, and feature animated energy particles traveling along relationship edges.
 

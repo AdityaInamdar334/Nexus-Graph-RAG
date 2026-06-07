@@ -250,6 +250,7 @@ export default function Home() {
                     </h3>
                     <ul className="text-sm text-gray-400 space-y-3">
                       <li><strong className="text-gray-200">Framework:</strong> FastAPI (Python) handles the async REST API routes.</li>
+                      <li><strong className="text-gray-200">Hosting:</strong> Deployed as a web service on <strong>Render</strong>.</li>
                       <li><strong className="text-gray-200">Vector Storage:</strong> ChromaDB stores document embeddings locally.</li>
                       <li><strong className="text-gray-200">AI Models:</strong> Powered by Llama 3.1 8B via NVIDIA NIM API for ultra-fast execution.</li>
                     </ul>
@@ -261,6 +262,7 @@ export default function Home() {
                     </h3>
                     <ul className="text-sm text-gray-400 space-y-3">
                       <li><strong className="text-gray-200">Framework:</strong> Next.js 15 App Router built with React.</li>
+                      <li><strong className="text-gray-200">Hosting:</strong> Deployed globally on <strong>Vercel</strong>.</li>
                       <li><strong className="text-gray-200">Styling:</strong> Tailwind CSS for a modern, glass-morphism aesthetic.</li>
                       <li><strong className="text-gray-200">Physics Engine:</strong> react-force-graph-2d powers the organic, interactive graph UI.</li>
                     </ul>
