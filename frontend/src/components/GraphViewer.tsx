@@ -11,8 +11,6 @@ interface GraphViewerProps {
 
 export default function GraphViewer({ graphData, onNodeClick }: GraphViewerProps) {
   const fgRef = useRef<any>(null);
-  const containerRef = useRef<HTMLDivElement>(null);
-  const [dimensions, setDimensions] = useState({ width: 0, height: 0 });
 
   // Apply custom D3 forces once the graph is mounted
   useEffect(() => {
@@ -27,27 +25,6 @@ export default function GraphViewer({ graphData, onNodeClick }: GraphViewerProps
     } catch (e) {
       console.warn("Failed to apply custom D3 forces:", e);
     }
-  }, [dimensions.width, dimensions.height]);
-
-  useEffect(() => {
-    if (containerRef.current) {
-      setDimensions({
-        width: containerRef.current.clientWidth,
-        height: containerRef.current.clientHeight,
-      });
-    }
-    
-    const handleResize = () => {
-      if (containerRef.current) {
-        setDimensions({
-          width: containerRef.current.clientWidth,
-          height: containerRef.current.clientHeight,
-        });
-      }
-    };
-    
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
   }, []);
 
   const gData = useMemo(() => {
@@ -97,13 +74,10 @@ export default function GraphViewer({ graphData, onNodeClick }: GraphViewerProps
   }, [onNodeClick]);
 
   return (
-    <div ref={containerRef} style={{ height: '100%', width: '100%', backgroundColor: '#050505' }}>
-      {dimensions.width > 0 && (
-        <ForceGraph2D
-          ref={fgRef}
-          width={dimensions.width}
-          height={dimensions.height}
-          graphData={gData}
+    <div style={{ height: '100%', width: '100%', backgroundColor: '#050505', display: 'flex' }}>
+      <ForceGraph2D
+        ref={fgRef}
+        graphData={gData}
           nodeLabel="name"
           nodeColor="color"
           linkColor={() => 'rgba(255,255,255,0.15)'}
@@ -148,7 +122,6 @@ export default function GraphViewer({ graphData, onNodeClick }: GraphViewerProps
           }}
 
         />
-      )}
     </div>
   );
 }
