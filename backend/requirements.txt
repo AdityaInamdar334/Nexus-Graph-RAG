@@ -8,3 +8,5 @@ chromadb
 pypdf
 tiktoken
 networkx
+python-dotenv
+langchain-nvidia-ai-endpoints
