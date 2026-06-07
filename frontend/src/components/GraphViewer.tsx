@@ -47,7 +47,8 @@ export default function GraphViewer({ graphData, onNodeClick }: GraphViewerProps
   }, [dimensions.width]);
 
   const gData = useMemo(() => {
-    if (!graphData?.nodes || !graphData?.links) return { nodes: [], links: [] };
+    const rawLinks = graphData?.links || graphData?.edges;
+    if (!graphData?.nodes || !rawLinks) return { nodes: [], links: [] };
     
     const nodes = graphData.nodes.map((n: any) => ({
       id: n.id,
@@ -56,7 +57,7 @@ export default function GraphViewer({ graphData, onNodeClick }: GraphViewerProps
       color: getNodeColor(n.type),
     }));
     
-    const links = graphData.links.map((l: any) => ({
+    const links = rawLinks.map((l: any) => ({
       source: l.source,
       target: l.target,
       label: l.type,
