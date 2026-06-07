@@ -84,7 +84,7 @@ export default function Home() {
 
   return (
     <main className="min-h-screen bg-[#0A0A0A] text-white font-sans selection:bg-emerald-500/30">
-      <div className="max-w-6xl mx-auto p-6 flex flex-col md:flex-row gap-8 h-[95vh] pt-12">
+      <div className="max-w-6xl mx-auto p-4 md:p-6 flex flex-col md:flex-row gap-6 md:gap-8 min-h-screen md:h-[95vh] pt-6 md:pt-12">
         {/* Left Panel - Upload & Info */}
         <div className="w-full md:w-1/3 flex flex-col gap-6">
           <div className="bg-white/5 border border-white/10 rounded-2xl p-6 backdrop-blur-md shadow-2xl transition-all hover:border-white/20">
@@ -134,24 +134,24 @@ export default function Home() {
         </div>
 
         {/* Right Panel - Chat / Graph View */}
-        <div className="w-full md:w-2/3 flex flex-col bg-white/5 border border-white/10 rounded-2xl overflow-hidden shadow-2xl backdrop-blur-sm">
+        <div className="w-full md:w-2/3 flex flex-col bg-white/5 border border-white/10 rounded-2xl overflow-hidden shadow-2xl backdrop-blur-sm h-[600px] md:h-auto md:min-h-0">
           {/* Tabs */}
-          <div className="flex border-b border-white/10 bg-white/5">
+          <div className="flex border-b border-white/10 bg-white/5 overflow-x-auto whitespace-nowrap hide-scrollbar">
             <button
               onClick={() => setActiveTab("chat")}
-              className={`flex-1 py-4 text-sm font-medium transition-colors ${activeTab === "chat" ? "text-emerald-400 border-b-2 border-emerald-500" : "text-gray-400 hover:text-gray-200"}`}
+              className={`flex-1 px-4 py-3 md:py-4 text-xs md:text-sm font-medium transition-colors ${activeTab === "chat" ? "text-emerald-400 border-b-2 border-emerald-500" : "text-gray-400 hover:text-gray-200"}`}
             >
               Research Chat
             </button>
             <button
               onClick={() => setActiveTab("graph")}
-              className={`flex-1 py-4 text-sm font-medium transition-colors ${activeTab === "graph" ? "text-emerald-400 border-b-2 border-emerald-500" : "text-gray-400 hover:text-gray-200"}`}
+              className={`flex-1 px-4 py-3 md:py-4 text-xs md:text-sm font-medium transition-colors ${activeTab === "graph" ? "text-emerald-400 border-b-2 border-emerald-500" : "text-gray-400 hover:text-gray-200"}`}
             >
               Knowledge Graph Data
             </button>
             <button
               onClick={() => setActiveTab("architecture")}
-              className={`flex-1 py-4 text-sm font-medium transition-colors ${activeTab === "architecture" ? "text-emerald-400 border-b-2 border-emerald-500" : "text-gray-400 hover:text-gray-200"}`}
+              className={`flex-1 px-4 py-3 md:py-4 text-xs md:text-sm font-medium transition-colors ${activeTab === "architecture" ? "text-emerald-400 border-b-2 border-emerald-500" : "text-gray-400 hover:text-gray-200"}`}
             >
               System Architecture
             </button>
