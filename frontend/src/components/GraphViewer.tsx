@@ -139,7 +139,6 @@ export default function GraphViewer({ graphData, onNodeClick }: GraphViewerProps
             ctx.fillText(label, node.x, textY);
             ctx.shadowBlur = 0;
           }}
-          }}
 
         />
       )}
