@@ -485,16 +485,26 @@ export default function Home() {
                   <h2 className="text-xl font-bold bg-gradient-to-r from-purple-400 to-blue-500 bg-clip-text text-transparent">Evaluation & Performance Dashboard</h2>
                   <p className="text-xs text-gray-400">Real-time metrics, semantic relevance scores, and system health monitors.</p>
                 </div>
-                <button 
-                  onClick={fetchMetrics}
-                  className="px-3 py-1.5 rounded-lg bg-white/5 hover:bg-white/10 border border-white/10 text-xs transition-colors flex items-center gap-1.5"
-                  disabled={loadingMetrics}
-                >
-                  <svg className={`w-3.5 h-3.5 ${loadingMetrics ? "animate-spin" : ""}`} fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0l3.181 3.183a8.25 8.25 0 0013.803-3.7M4.031 9.865a8.25 8.25 0 0113.803-3.7l3.181 3.182m0-4.991v4.99" />
-                  </svg>
-                  Sync
-                </button>
+                <div className="flex gap-2">
+                  <a 
+                    href="/dashboard" 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    className="px-3 py-1.5 rounded-lg bg-emerald-600/10 hover:bg-emerald-600/20 border border-emerald-500/20 text-emerald-400 text-xs transition-colors flex items-center gap-1.5"
+                  >
+                    Open in New Tab &nearr;
+                  </a>
+                  <button 
+                    onClick={fetchMetrics}
+                    className="px-3 py-1.5 rounded-lg bg-white/5 hover:bg-white/10 border border-white/10 text-xs transition-colors flex items-center gap-1.5"
+                    disabled={loadingMetrics}
+                  >
+                    <svg className={`w-3.5 h-3.5 ${loadingMetrics ? "animate-spin" : ""}`} fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0l3.181 3.183a8.25 8.25 0 0013.803-3.7M4.031 9.865a8.25 8.25 0 0113.803-3.7l3.181 3.182m0-4.991v4.99" />
+                    </svg>
+                    Sync
+                  </button>
+                </div>
               </div>
 
               {metricsData ? (
