@@ -14,7 +14,7 @@ export default function DashboardPage() {
   const [slackWebhook, setSlackWebhook] = useState("");
   const [emailAlerts, setEmailAlerts] = useState("");
 
-  const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
+  const API_URL = process.env.NEXT_PUBLIC_API_URL || "https://nexus-rag-backend-poa5.onrender.com";
 
   const fetchMetrics = async () => {
     setLoadingMetrics(true);
