@@ -1,17 +1,45 @@
-from langchain_nvidia_ai_endpoints import ChatNVIDIA
+import time
+from langchain_nvidia_ai_endpoints import ChatNVIDIA, NVIDIAEmbeddings
 from langchain_core.prompts import PromptTemplate
 from .hybrid_retriever import hybrid_retrieve
 from .vector_store import get_vector_store
 
+def calculate_relevance(question: str, context: str) -> float:
+    if not context.strip():
+        return 0.0
+    try:
+        embeddings = NVIDIAEmbeddings(model="nvidia/nv-embed-v1")
+        q_emb = embeddings.embed_query(question)
+        # Grab first 4000 characters of context to prevent context limits during embedding
+        c_emb = embeddings.embed_query(context[:4000])
+        
+        # Calculate cosine similarity
+        dot_product = sum(a * b for a, b in zip(q_emb, c_emb))
+        mag_q = sum(a * a for a in q_emb) ** 0.5
+        mag_c = sum(b * b for b in c_emb) ** 0.5
+        if mag_q == 0 or mag_c == 0:
+            return 0.0
+        return dot_product / (mag_q * mag_c)
+    except Exception as e:
+        print(f"Error calculating semantic relevance: {e}")
+        return 0.5 # Default fallback score
+
 def ask_question_hybrid(question: str, filename: str = None, graph_store=None):
     """
-    Answers a question using hybrid context (vector + graph) instead of simple RetrievalQA.
+    Answers a question using hybrid context (vector + graph) instead of simple RetrievalQA,
+    while measuring performance metrics and context relevance.
     """
     vector_store = get_vector_store()
     
-    # Get combined hybrid context
+    # 1. Retrieve hybrid context and measure latency
+    retrieval_start = time.time()
     combined_context, source_docs = hybrid_retrieve(question, vector_store, graph_store, filename=filename, k=4)
+    retrieval_latency = time.time() - retrieval_start
     
+    # 2. Compute semantic relevance
+    relevance_score = calculate_relevance(question, combined_context)
+    
+    # 3. Prompt and invoke LLM, measuring latency
     llm = ChatNVIDIA(model="meta/llama-3.1-8b-instruct", temperature=0.2, top_p=0.7, max_tokens=1024)
     
     prompt_template = """Use the following pieces of context to answer the question at the end. 
@@ -29,10 +57,19 @@ Helpful Answer:"""
     )
     
     formatted_prompt = prompt.format(context=combined_context, question=question)
+    
+    llm_start = time.time()
     response = llm.invoke(formatted_prompt)
+    llm_latency = time.time() - llm_start
     
     return {
         "result": response.content,
         "source_documents": source_docs,
-        "hybrid_context": combined_context
+        "hybrid_context": combined_context,
+        "metrics": {
+            "retrieval_latency": retrieval_latency,
+            "llm_latency": llm_latency,
+            "relevance_score": relevance_score
+        }
     }
+
