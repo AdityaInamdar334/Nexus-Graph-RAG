@@ -1,85 +1,387 @@
-# 🧠 Nexus Graph RAG (Research Assistant)
+# Nexus Graph RAG
 
-![License](https://img.shields.io/badge/license-MIT-blue.svg)
-![Python](https://img.shields.io/badge/python-3.13-blue.svg)
-![Next.js](https://img.shields.io/badge/Next.js-15-black.svg)
+[![Python](https://img.shields.io/badge/Python-3.13-blue)](https://www.python.org/)
+[![FastAPI](https://img.shields.io/badge/FastAPI-Backend-green)](https://fastapi.tiangolo.com/)
+[![Next.js](https://img.shields.io/badge/Next.js-15-black)](https://nextjs.org/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-Nexus Graph RAG is an advanced, AI-powered research assistant designed to process complex PDF documents (like research papers and resumes). It uses a hybrid approach combining **Vector Retrieval-Augmented Generation (RAG)** for deep semantic Q&A and an **Obsidian-style Force-Directed Knowledge Graph** to visually map out entities and relationships.
+Nexus Graph RAG is a full-stack AI research assistant that combines Retrieval-Augmented Generation (RAG) with automated knowledge graph construction to enable semantic document understanding and interactive exploration of complex PDFs.
 
-This project was built to demonstrate modern full-stack AI engineering, utilizing highly-optimized local and API-driven language models to build an organic, physics-based UI and lightning-fast chat experience.
-
----
-
-## 🏗️ Architecture Overview
-
-The system is split into a highly-performant Python backend and a sleek, dynamic React frontend.
-
-### 1. The Backend (FastAPI + Langchain)
-- **Framework**: `FastAPI` handles the REST API routes (`/upload`, `/ask`, `/graph`) asynchronously.
-- **Hosting**: Deployed on **Render** using a persistent web service blueprint.
-- **Document Processing**: `PyPDFLoader` and `RecursiveCharacterTextSplitter` chunk PDFs into overlapping semantic blocks.
-- **Vector Storage**: `ChromaDB` stores document embeddings locally.
-- **AI Models (Powered by NVIDIA NIM API)**:
-  - **Embeddings**: `nvidia/nv-embed-v1` generates high-quality semantic vectors.
-  - **Graph Extraction**: `meta/llama-3.1-8b-instruct` parses the text into a strict JSON schema of Entities (Nodes) and Relationships (Edges) using an optimized manual parsing bypass.
-  - **Chat / RAG**: `meta/llama-3.1-8b-instruct` acts as the conversational agent, synthesizing context retrieved from ChromaDB to answer complex queries.
-
-### 2. The Frontend (Next.js + TailwindCSS)
-- **Framework**: `Next.js 15` (App Router) built with `React`.
-- **Hosting**: Deployed globally on **Vercel** for optimal edge performance.
-- **Styling**: `Tailwind CSS` is used for modern, glass-morphism aesthetics and responsive layouts.
-- **Graph UI**: `react-force-graph-2d` powers the Obsidian-style physics engine. Nodes repel each other, glow dynamically based on entity types, and feature animated energy particles traveling along relationship edges.
+The system processes research papers, technical documents, and resumes, extracting structured entities and relationships while providing source-grounded conversational question answering. An interactive force-directed knowledge graph visualizes connections discovered within uploaded documents, allowing users to navigate information beyond traditional chat interfaces.
 
 ---
 
-## ✨ Key Features
+## Overview
 
-- **Semantic Document Q&A**: Upload any PDF and chat with it. The AI doesn't just keyword search; it understands the semantic context using vector embeddings.
-- **Obsidian-Style Knowledge Graph**: The backend uses an LLM to autonomously extract "Entities" (e.g., people, concepts, technologies) and "Relationships" (e.g., "USES", "DEVELOPED", "WORKED_AT"). The frontend visualizes this as a living, breathing physics simulation.
-- **Lightning Fast Response Times**: By utilizing the 8B parameter Llama 3.1 model running on NVIDIA's optimized NIM architecture, chat responses and graph extractions complete in seconds.
-- **Contextual Sources**: Every answer the assistant provides includes the exact document excerpts (sources) it used to formulate its response.
+Traditional document chat systems rely solely on vector retrieval, limiting users to conversational exploration. Nexus Graph RAG extends this paradigm by combining:
+
+* Semantic retrieval through vector embeddings
+* Knowledge graph extraction using large language models
+* Interactive graph visualization
+* Source-grounded conversational AI
+
+The result is a research assistant capable of both answering questions and revealing relationships hidden within large documents.
 
 ---
 
-## 🚀 Getting Started
+## Project Highlights
 
-### Prerequisites
-- Python 3.10+
-- Node.js 18+
-- NVIDIA NIM API Key (`NVIDIA_API_KEY`)
+* Built a full-stack Retrieval-Augmented Generation platform using FastAPI and Next.js
+* Implemented semantic document search using vector embeddings and ChromaDB
+* Designed an automated knowledge graph extraction pipeline powered by LLMs
+* Developed an interactive force-directed graph visualization for entity exploration
+* Optimized inference latency through lightweight model selection and efficient retrieval
+* Deployed production-ready backend and frontend services on cloud infrastructure
+
+---
+
+## System Architecture
+
+The application follows a modular architecture consisting of three primary components:
+
+### Document Processing Layer
+
+PDF documents are ingested and transformed into structured semantic representations.
+
+Pipeline:
+
+```text
+PDF Upload
+    ↓
+Text Extraction
+    ↓
+Chunking
+    ↓
+Embedding Generation
+    ↓
+Vector Storage
+```
+
+Components:
+
+* PDF Parsing
+* Recursive Text Splitting
+* Embedding Generation
+* ChromaDB Indexing
+
+---
+
+## Backend Architecture
+
+### FastAPI Service
+
+The backend exposes asynchronous REST endpoints for:
+
+| Endpoint  | Purpose                                |
+| --------- | -------------------------------------- |
+| `/upload` | Upload and process documents           |
+| `/ask`    | Perform Retrieval-Augmented Generation |
+| `/graph`  | Generate entity relationship graphs    |
+
+The service is optimized for concurrent requests and efficient document processing workflows.
+
+---
+
+### Retrieval-Augmented Generation Pipeline
+
+The RAG system follows the workflow:
+
+```text
+User Query
+    ↓
+Vector Search
+    ↓
+Relevant Context Retrieval
+    ↓
+LLM Synthesis
+    ↓
+Grounded Response
+```
+
+Retrieved document chunks are injected into the model prompt, enabling context-aware responses that remain grounded in source material.
+
+---
+
+### Vector Database
+
+ChromaDB is used to store and retrieve document embeddings.
+
+Benefits include:
+
+* Fast semantic search
+* Persistent vector storage
+* Scalable retrieval workflows
+* Low-latency similarity matching
+
+---
+
+### Knowledge Graph Extraction
+
+An LLM-based extraction pipeline identifies:
+
+#### Entities
+
+Examples:
+
+* People
+* Organizations
+* Technologies
+* Concepts
+* Research Topics
+
+#### Relationships
+
+Examples:
+
+* USES
+* CREATED
+* DEVELOPED
+* WORKED_AT
+* RELATED_TO
+
+Extracted entities and relationships are converted into a structured graph representation.
+
+---
+
+## Frontend Architecture
+
+### Next.js Application
+
+The frontend is built using:
+
+* Next.js 15
+* React
+* TypeScript
+* Tailwind CSS
+
+The application provides:
+
+* PDF upload workflows
+* Conversational document interaction
+* Interactive graph exploration
+* Source inspection
+
+---
+
+### Interactive Knowledge Graph
+
+The graph interface is powered by a force-directed physics engine.
+
+Features include:
+
+* Dynamic node repulsion
+* Relationship edge visualization
+* Entity-type highlighting
+* Interactive graph navigation
+* Real-time graph rendering
+
+Users can visually explore relationships discovered within uploaded documents.
+
+---
+
+## Repository Structure
+
+```text
+nexus-graph-rag/
+│
+├── backend/
+│   ├── app/
+│   ├── vectorstore/
+│   ├── graph/
+│   └── requirements.txt
+│
+├── frontend/
+│   ├── app/
+│   ├── components/
+│   ├── hooks/
+│   └── package.json
+│
+└── README.md
+```
+
+---
+
+## Technology Stack
+
+### Backend
+
+* Python
+* FastAPI
+* LangChain
+* ChromaDB
+* PyPDF
+* NVIDIA NIM APIs
+
+### Frontend
+
+* Next.js 15
+* React
+* TypeScript
+* Tailwind CSS
+* React Force Graph
+
+### AI & Retrieval
+
+* Retrieval-Augmented Generation (RAG)
+* Vector Embeddings
+* Knowledge Graph Extraction
+* Semantic Search
+* Large Language Models
+
+---
+
+## Installation
 
 ### Backend Setup
+
+Create a virtual environment:
+
 ```bash
-cd backend
 python -m venv venv
 source venv/bin/activate
+```
+
+Install dependencies:
+
+```bash
 pip install -r requirements.txt
 ```
-Create a `.env` file in the `backend/` directory:
+
+Create a `.env` file:
+
 ```env
-NVIDIA_API_KEY=nvapi-your-key-here
+NVIDIA_API_KEY=your_api_key
 ```
-Run the FastAPI server:
+
+Start the API server:
+
 ```bash
 uvicorn app.main:app --reload
 ```
 
+---
+
 ### Frontend Setup
+
+Install dependencies:
+
 ```bash
-cd frontend
 npm install
+```
+
+Run the development server:
+
+```bash
 npm run dev
 ```
 
-The application will be running at `http://localhost:3000`.
+Application URL:
+
+```text
+http://localhost:3000
+```
 
 ---
 
-## 💡 Why This Architecture?
+## Deployment
 
-1. **Hybrid LLM Routing**: Rather than relying on massive 70B+ models for everything (which causes timeout and latency issues), this project utilizes highly-optimized smaller models (Llama 3.1 8B). This demonstrates an understanding of **cost and latency optimization** in production AI systems.
-2. **Bypassing Tool-Calling Limitations**: When Llama 8B struggled with strict Langchain `with_structured_output` JSON generation, the architecture was intentionally refactored to use manual prompt-engineering and regex-stripping. This shows resilience and problem-solving around API limitations.
-3. **Immersive UX**: The use of a force-directed graph with HTML5 Canvas (instead of standard CSS grids) pushes the boundary of what a data dashboard feels like, taking inspiration from top-tier tools like Obsidian.
+### Backend
+
+Deployed using cloud-hosted FastAPI services.
+
+Responsibilities:
+
+* Document ingestion
+* Embedding generation
+* Retrieval workflows
+* Graph extraction
+* LLM orchestration
+
+### Frontend
+
+Deployed globally through edge infrastructure for low-latency user experiences.
+
+Responsibilities:
+
+* User interaction
+* Graph rendering
+* Document uploads
+* Conversational interface
 
 ---
-*Built as a demonstration of Agentic Coding, Advanced RAG, and Modern UI Engineering.*
+
+## Design Decisions
+
+### Lightweight Model Strategy
+
+Rather than relying on large-scale models for every task, the system uses optimized smaller models for:
+
+* Faster inference
+* Reduced latency
+* Lower operational cost
+* Improved responsiveness
+
+This reflects practical production engineering tradeoffs frequently encountered in enterprise AI systems.
+
+---
+
+### Knowledge Graph Augmentation
+
+Most RAG applications expose information solely through chat interfaces.
+
+This project augments retrieval with graph-based reasoning and visualization, enabling users to:
+
+* Discover hidden relationships
+* Navigate entities visually
+* Explore document structure interactively
+
+---
+
+### Source-Grounded Responses
+
+Every response is generated from retrieved document context.
+
+Benefits include:
+
+* Improved factual grounding
+* Increased transparency
+* Better research workflows
+* Explainable AI outputs
+
+---
+
+## Future Improvements
+
+Potential extensions include:
+
+* Multi-document graph merging
+* Cross-document relationship discovery
+* GraphRAG integration
+* Agentic research workflows
+* Citation generation
+* Multi-modal document support
+* Neo4j graph persistence
+* User authentication and document management
+
+---
+
+## Learning Outcomes
+
+This project demonstrates experience with:
+
+* Retrieval-Augmented Generation
+* Semantic Search Systems
+* Vector Databases
+* Knowledge Graph Construction
+* LLM Application Development
+* Full-Stack Engineering
+* Cloud Deployment
+* AI System Design
+
+---
+
+## License
+
+This project is licensed under the MIT License.
+
+See the `LICENSE` file for additional information.
