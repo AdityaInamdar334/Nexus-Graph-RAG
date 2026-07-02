@@ -384,4 +384,4 @@ This project demonstrates experience with:
 
 This project is licensed under the MIT License.
 
-See the `LICENSE` file for additional information.
+See the `LICENSE` file for additional information. 
